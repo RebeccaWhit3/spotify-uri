@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to Album Art</title>
+    <script>
+        async function redirectToAlbumArt() {
+            // Function to get URL parameters
+            function getUrlParameter(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
+            }
+
+            // Get artist and album from URL parameters
+            const artist = getUrlParameter("artist");
+            const album = getUrlParameter("album");
+
+            if (artist && album) {
+                const apiKey = "0b424c7f15ca2516d318eabd55835b00"; // Replace with your Last.fm API key
+                const url = `https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=${apiKey}&artist=${encodeURIComponent(artist)}&album=${encodeURIComponent(album)}&format=json`;
+
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+
+                    if (data.album && data.album.image && data.album.image.length > 0) {
+                        // Get the largest image
+                        const images = data.album.image;
+                        const largeImage = images.find(img => img.size === "extralarge") || images[images.length - 1];
+
+                        // Redirect the browser to the album art URL
+                        window.location.replace(largeImage["#text"]);
+                    } else {
+                        document.body.innerHTML = "<h1>Album art not found.</h1>";
+                    }
+                } catch (error) {
+                    document.body.innerHTML = "<h1>Error fetching album art.</h1>";
+                    console.error(error);
+                }
+            } else {
+                document.body.innerHTML = "<h1>Missing artist or album parameters.</h1>";
+            }
+        }
+
+        // Trigger the redirection on page load
+        redirectToAlbumArt();
+    </script>
+</head>
+<body>
+    <h1>Redirecting to Album Art...</h1>
+</body>
+</html>
