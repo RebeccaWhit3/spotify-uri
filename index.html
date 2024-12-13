@@ -5,14 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirect to Spotify</title>
 </head>
-<body onload="waitFiveSec()">
+<body>
     <h1>Redirecting to Spotify...</h1>
-    <script>
-      function waitFiveSec(){
-        setTimeout(function, milliseconds) /*(here you need to implement delay code)*/
-        window.close();
-      }
-    </script>
     <script>
         // Function to get URL parameters
         function getUrlParameter(name) {
@@ -20,30 +14,18 @@
             return urlParams.get(name);
         }
 
-        // Check if the page has already redirected to avoid loops
-        if (!localStorage.getItem('redirected')) {
-            // Set the 'redirected' flag to prevent further redirections
-            localStorage.setItem('redirected', 'true');
-            
-            // Get artist and title parameters from the URL
-            const artist = getUrlParameter('artist');
-            const title = getUrlParameter('title');
+        // Get artist and title parameters from the URL
+        const artist = getUrlParameter('artist');
+        const title = getUrlParameter('title');
 
-            if (artist && title) {
-                // Create the Spotify search URL
-                const spotifyUrl = `spotify:search:${encodeURIComponent(artist)}%20${encodeURIComponent(title)}`;
+        if (artist && title) {
+            // Create the Spotify search URL
+            const spotifyUrl = `spotify:search:${encodeURIComponent(artist)}%20${encodeURIComponent(title)}`;
 
-                // Redirect immediately using window.location.replace()
-                window.location.replace(spotifyUrl);
-
-                // Attempt to close the current window (it may fail depending on browser settings)
-                window.close();
-            } else {
-                document.body.innerHTML = "<h1>Error: Missing parameters. Please provide 'artist' and 'title' in the URL.</h1>";
-            }
+            // Redirect immediately using window.location.replace()
+            window.location.replace(spotifyUrl);
         } else {
-            // If redirected, clear the flag after a second so the page can be used again
-            localStorage.removeItem('redirected');
+            document.body.innerHTML = "<h1>Error: Missing parameters. Please provide 'artist' and 'title' in the URL.</h1>";
         }
     </script>
 </body>
