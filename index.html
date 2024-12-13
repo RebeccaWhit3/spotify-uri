@@ -1,8 +1,33 @@
-<html>
-  <head>
-    <meta http-equiv="refresh" content="1; url=spotify:search:{ARTIST}%20{TITLE}">
-  </head>
-  <body>
-    <!-- The page will automatically redirect to Spotify, no click needed -->
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="1; url=" id="redirect-meta">
+    <title>Redirect to Spotify</title>
+</head>
+<body>
+    <h1>Redirecting to Spotify...</h1>
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Get artist and title parameters from the URL
+        const artist = getUrlParameter('artist');
+        const title = getUrlParameter('title');
+
+        if (artist && title) {
+            // Create the Spotify search URL
+            const spotifyUrl = `spotify:search:${encodeURIComponent(artist)}%20${encodeURIComponent(title)}`;
+
+            // Set the redirection URL to Spotify
+            document.getElementById('redirect-meta').setAttribute('content', '1; url=' + spotifyUrl);
+        } else {
+            document.body.innerHTML = "<h1>Error: Missing parameters. Please provide 'artist' and 'title' in the URL.</h1>";
+        }
+    </script>
+</body>
 </html>
