@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>Redirecting to Spotify...</h1>
+    <button id="closeButton" style="display: block; margin-top: 20px; font-size: 18px; padding: 10px 20px; cursor: pointer;">Close Window</button>
     <script>
         // Function to get URL parameters
         function getUrlParameter(name) {
@@ -27,6 +28,11 @@
         } else {
             document.body.innerHTML = "<h1>Error: Missing parameters. Please provide 'artist' and 'title' in the URL.</h1>";
         }
+
+        // Close the window when the button is clicked
+        document.getElementById('closeButton').onclick = function() {
+            window.close();
+        };
     </script>
 </body>
 </html>
